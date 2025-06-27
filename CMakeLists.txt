@@ -33,9 +33,9 @@ set(ANTLR_EXECUTABLE /usr/local/lib/java/antlr-4.13.0-complete.jar)
 find_package(ANTLR REQUIRED)
 
 # Call macro to add lexer and grammar to your build dependencies.
-antlr_target(SampleGrammarLexer TLexer.g4 LEXER
+antlr_target(SampleGrammarLexer grammar/TLexer.g4 LEXER
              PACKAGE antlrcpptest)
-antlr_target(SampleGrammarParser TParser.g4 PARSER
+antlr_target(SampleGrammarParser grammar/TParser.g4 PARSER
              PACKAGE antlrcpptest
              DEPENDS_ANTLR SampleGrammarLexer
              COMPILE_FLAGS -lib ${ANTLR_SampleGrammarLexer_OUTPUT_DIR})
@@ -53,6 +53,7 @@ list(TRANSFORM parser_list PREPEND "src/parser/")
 
 add_library(lib_parser STATIC ${parser_list})
 target_include_directories(lib_parser PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/includes)
+target_link_libraries(lib_parser PUBLIC antlr4_static)
 
 # add generated grammar to demo binary target
 add_executable(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cc
@@ -60,5 +61,3 @@ add_executable(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cc
                ${ANTLR_SampleGrammarParser_CXX_OUTPUTS})
 
 target_link_libraries(${PROJECT_NAME} PUBLIC lib_parser)
-
-target_link_libraries(${PROJECT_NAME} PUBLIC antlr4_static)
