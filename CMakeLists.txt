@@ -34,15 +34,17 @@ find_package(ANTLR REQUIRED)
 
 # Call macro to add lexer and grammar to your build dependencies.
 antlr_target(SampleGrammarLexer grammar/TLexer.g4 LEXER
-             PACKAGE antlrcpptest)
+             PACKAGE antlrcpptest
+             OUTPUT_DIRECTORY /home/alexandre/Projects/ANTLR_intro/generated)
 antlr_target(SampleGrammarParser grammar/TParser.g4 PARSER
+             OUTPUT_DIRECTORY /home/alexandre/Projects/ANTLR_intro/generated
              PACKAGE antlrcpptest
              DEPENDS_ANTLR SampleGrammarLexer
              COMPILE_FLAGS -lib ${ANTLR_SampleGrammarLexer_OUTPUT_DIR})
 
 # include generated files in project environment
-include_directories(${ANTLR_SampleGrammarLexer_OUTPUT_DIR})
-include_directories(${ANTLR_SampleGrammarParser_OUTPUT_DIR})
+include_directories(/home/alexandre/Projects/ANTLR_intro/generated)
+include_directories(/home/alexandre/Projects/ANTLR_intro/generated)
 
 
 set(parser_list
@@ -53,6 +55,7 @@ list(TRANSFORM parser_list PREPEND "src/parser/")
 
 add_library(lib_parser STATIC ${parser_list})
 target_include_directories(lib_parser PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/includes)
+target_include_directories(lib_parser PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/generated)
 target_link_libraries(lib_parser PUBLIC antlr4_static)
 
 # add generated grammar to demo binary target
