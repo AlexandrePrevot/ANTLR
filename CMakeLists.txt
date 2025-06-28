@@ -65,6 +65,18 @@ set(antlr_list
 
 list(TRANSFORM antlr_list PREPEND "generated/")
 
+set(visitor_list
+    ImageVisitor.cc
+)
+
+list(TRANSFORM visitor_list PREPEND "src/visitors/")
+
+
+add_library(lib_visitor STATIC ${visitor_list})
+target_include_directories(lib_visitor PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/includes)
+target_link_libraries(lib_visitor PUBLIC lib_antlr)
+target_link_libraries(lib_visitor PUBLIC antlr4_static)
+
 add_library(lib_antlr STATIC ${antlr_list})
 
 
@@ -73,6 +85,7 @@ target_include_directories(lib_parser PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
 target_include_directories(lib_parser PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/generated)
 target_link_libraries(lib_parser PUBLIC lib_antlr)
 target_link_libraries(lib_parser PUBLIC antlr4_static)
+
 
 # add generated grammar to demo binary target
 add_executable(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cc
