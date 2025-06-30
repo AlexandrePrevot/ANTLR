@@ -79,6 +79,9 @@ target_link_libraries(lib_visitor PUBLIC antlr4_static)
 
 add_library(lib_antlr STATIC ${antlr_list})
 
+add_library(lib_scene STATIC src/Scene.cc)
+target_include_directories(lib_scene PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/includes)
+
 
 add_library(lib_parser STATIC ${parser_list})
 target_include_directories(lib_parser PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/includes)
